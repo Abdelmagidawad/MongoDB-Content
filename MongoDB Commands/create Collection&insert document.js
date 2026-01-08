@@ -36,3 +36,19 @@
 // To insert Multiple documents on the collection in the same line command
 =>=>db.collection-Name.insertMany([{document1},{document2},{document2},...])
 =>db.users.inserMany([{name:"Ahmed",age:15},{name:"Omar",age:25},{name:"Ragab",age:26}])
+
+// Validator options => to must the documents of collection that have validator fields
+// Explicit creation of Collection with add validator options
+=>=>db.createCollection("collection-Name",validator options);
+=>db.createCollection("todos",{
+    //define the validator of fields document in collection
+    validator:{
+        $and:[
+            {title:{$type:"string"}},
+            {status:{$in:["todo","doing","done"]}}
+        ]
+    }
+})
+=>db.todos.insertOne({title:"todo1",status:"todo"}) //{ok:1}
+=>db.todos.insertOne({title:11,status:"todo"}) //Error
+=>db.todos.insertOne({title:"todo2"}) //Error
