@@ -70,3 +70,24 @@
 
 =>db.books.find({},{ISBN:1,Title:1}) // to get all documents books with Filed ISBN,title only
 =>db.books.find({},{Pages:0}) //  to get all documents books without filed Pages  
+
+
+// -Arrays query operators-
+// -$all ,$size ,$elemMatch
+
+// $all(Array query operator) => to check the filed that have all values insides list 
+// Syntax => {filed:{$all:[value1,value2,value3,...]}}
+=>db.users.insertMany([{ name: 'Ali',age: 26,tags: [ 'html', 'css', 'js' ],scores: [ 10, 80, 50 ]},{ name:'Ahmed', age: 70,tags: [ 'js' ],scores: [ 50, 17 ]}])
+=>db.users.find({tags:{$all:["js","css"]}}) //to return user with tags include js and css
+
+// $size => to return documents with inside array to qual size 
+// Syntax => {field:{$size:size-value}}
+=>db.users.find({tags:{$size:3}}) //to return users with tags size=3
+
+// $elemMatch => to check multi conditions to filed and important used array fo objects
+// Syntax => {field:{$elemMatch:{condition1,condition2,...}}}
+=>db.users.find({tags:{$elemMatch:{$gte:50 ,$lte:90}}}) //to return users with tags equal this range
+
+// findOne() => to return a first match result
+// Syntax => db.collection.findOne({field:value})
+=>db.books.findOne({Pages:{$gt:50}}) // to return first book with Pages > 50 only
