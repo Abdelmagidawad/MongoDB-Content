@@ -91,3 +91,18 @@
 // findOne() => to return a first match result
 // Syntax => db.collection.findOne({field:value})
 =>db.books.findOne({Pages:{$gt:50}}) // to return first book with Pages > 50 only
+
+// -Nor ,Not ,Type operators-
+
+// $nor => joins query returns all documents that fail to match both clauses
+// Syntax => {$nor:[condition1,condition2,condition3,....]}
+=>db.users.find({$nor:[{city:"Cairo"},{age:{$lt:18}}]}) // to return all users with not match this conditions
+
+// $not => to return all documents that not match this field query
+// Syntax => {field:{$not:{operator}}}
+db.users.find({age:{$not:{$gt:30}}}) //to return all users with age not greater than 30
+
+// $type => return documents with certain types
+// Syntax => {field:{$type:"type"}}
+=>db.users.find({age:{$type:"number"}})
+
