@@ -105,3 +105,29 @@ db.users.findOne()
   }
 )
 => db.users.findOne()
+
+// Use $ and $elemMatch to Updating Documents
+
+// $
+=> db.users.updateOne({},{$set:{subjects:["js","mongo","angular"]}})
+=> db.users.find({subjects:{$exists:true}})
+=> db.users.finOne()
+=> db.users.find({subjects:"mongo"})
+=> db.users.find({subjects:"mongo"},{"subjects.$":1})
+
+=> db.users.updateMany({subjects:"mongo"},{$set:{"subjects.$":"react"}})
+=> db.users.find({subjects:{$exists:true}},{subjects:{$elemMatch:{$exists:true}}})
+=> db.users.find({subjects:{$exists:true}})
+
+=> db.users.updateOne({subjects:"php"},{$set:{"subjects.$":"C#"}})
+=> db.users.find({subjects:"C#"})
+
+// $elemMatch 
+=> db.users.insertOne({name:"Salah",grades:[{name:"js",mark:5},{name:"mongo",mark:30}]})
+=> db.users.find()
+
+=>  db.users.updateOne({grades:{$elemMatch:{name:"js"}}},{$set:{"grades.$.mark":40}})
+=> db.users.findOne({grades:{$elemMatch:{name:"js"}}})
+
+=> db.users.updateOne({grades:{$elemMatch:{name:"mongo"}}},{$inc:{"grades.$.mark":20}})
+=> db.users.find({grades:{$elemMatch:{name:"mongo"}}})
