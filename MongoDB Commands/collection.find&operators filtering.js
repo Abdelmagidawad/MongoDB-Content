@@ -92,6 +92,15 @@
 // Syntax => db.collection.findOne({field:value})
 =>db.books.findOne({Pages:{$gt:50}}) // to return first book with Pages > 50 only
 
+// Syntax => db.collection.findOne({field:value}).filed  // to get the direct value of field address
+=>  db.users.findOne().address 
+=>  db.users.findOne().address.city
+
+=>  db.users.findOne().name
+=>  db.users.findOne().scores
+=>  db.users.findOne({name:"Ali"}).scores
+
+
 // -Nor ,Not ,Type operators-
 
 // $nor => joins query returns all documents that fail to match both clauses
