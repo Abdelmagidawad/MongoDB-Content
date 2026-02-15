@@ -36,3 +36,60 @@
 // 2026-02-14T23:51:56.518+0200    writing indexes.users to dump\indexes\users.bson
 // ects
 
+
+//  --mongorestore--
+// => The mongorestore program loads data from either a binary database dump created by mongodump
+
+=> mongorestore --db shopDB dump/shopDB
+
+// output
+// 026-02-15T00:36:43.981+0200    The --db and --collection flags are deprecated for this use-case; please use --nsInclude instead, i.e. with --nsInclude=${DATABASE}.${COLLECTION}
+// 2026-02-15T00:36:43.997+0200    building a list of collections to restore from dump\shopDB dir
+// 2026-02-15T00:36:43.998+0200    don't know what to do with file "dump\shopDB\prelude.json", skipping...
+// 2026-02-15T00:36:44.012+0200    reading metadata for shopDB.products from dump\shopDB\products.metadata.json
+// 2026-02-15T00:36:44.024+0200    reading metadata for shopDB.users from dump\shopDB\users.metadata.json
+// 2026-02-15T00:36:44.026+0200    restoring to existing collection shopDB.users without dropping
+// ects... Error
+
+// => Error => database repeted the same collection 
+// => this remove the old database and restore database again
+
+=> mongorestore --db shopDB dump/shopDB --dump
+
+// output
+// 2026-02-15T00:42:28.706+0200    restoring shopDB.products from dump\shopDB\products.bson
+// 2026-02-15T00:42:28.718+0200    finished restoring shopDB.products (3 documents, 0 failures)
+// 2026-02-15T00:42:28.719+0200    no indexes to restore for collection shopDB.products
+// 2026-02-15T00:42:28.720+0200    no indexes to restore for collection shopDB.users
+// 2026-02-15T00:42:28.720+0200    6 document(s) restored successfully. 0 document(s) failed to restore.
+
+// use mongosh 
+=> use shopDB
+=> show collections
+=> db.products.find()
+
+// use CMD 
+=> mongorestore --db myDB mybackup/myDB --drop
+
+// output
+// 2026-02-15T00:45:50.251+0200    no indexes to restore for collection myDB.stores
+// 2026-02-15T00:45:50.252+0200    no indexes to restore for collection myDB.todos
+// 2026-02-15T00:45:50.252+0200    no indexes to restore for collection myDB.users
+// 2026-02-15T00:45:50.252+0200    no indexes to restore for collection myDB.students
+// 2026-02-15T00:45:50.252+0200    17 document(s) restored successfully. 0 document(s) failed to restore.
+
+// use mongosh 
+=> use myDB
+=> show collections
+=> db.users.find()
+
+// use mongosh 
+=> mongorestore dump/
+// output => error to datadases repeted
+
+=> mongorestore dump/ --drop
+
+// output
+// 2026-02-15T00:51:29.144+0200    236391 document(s) restored successfully. 
+// 0 document(s) failed to restore.
+
