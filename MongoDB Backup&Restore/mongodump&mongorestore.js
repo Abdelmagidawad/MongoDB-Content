@@ -93,3 +93,84 @@
 // 2026-02-15T00:51:29.144+0200    236391 document(s) restored successfully. 
 // 0 document(s) failed to restore.
 
+//
+=> use schoolDB 
+=> show collections
+=> db.students.find()
+
+=> mongoexport --db schoolDB --collection students --query "{\"age\":{\"$gt\":21}}"
+
+// output
+// 2026-02-15T16:09:43.661+0200    connected to: mongodb://localhost/
+// 2026-02-15T16:09:43.766+0200    exported 3 records
+
+=> mongoexport --db schoolDB --collection students --type csv --fields name,age,division --out students.csv
+
+// output
+// 2026-02-15T21:10:40.954+0200    connected to: mongodb://localhost/
+// 2026-02-15T21:10:41.220+0200    exported 4 records
+
+=> mongoimport --db schoolDB --collection students --file students.json --drop
+
+// output
+// 2026-02-15T21:17:22.359+0200    connected to: mongodb://localhost/
+// 2026-02-15T21:17:22.361+0200    dropping: schoolDB.students
+// 2026-02-15T21:17:22.623+0200    3 document(s) imported successfully. 0 document(s) failed to import.
+
+=> mongoimport --db schoolDB --collections students --type csv --headerline --file students.csv --drop
+
+// output
+// 2026-02-15T21:21:05.001+0200    connected to: mongodb://localhost/
+// 2026-02-15T21:21:05.006+0200    dropping: schoolDB.students
+// 2026-02-15T21:21:05.192+0200    4 document(s) imported successfully. 0 document(s) failed to import.
+
+=> mongoexport --db shopDB --collection products --fields name,price --out products.json
+
+// output
+// 2026-02-15T21:26:13.158+0200    connected to: mongodb://localhost/
+// 2026-02-15T21:26:13.162+0200    exported 3 records
+
+=> mongoimport --db shopDB --collection products --file products.json --drop
+
+// output
+// 2026-02-15T21:28:39.026+0200    connected to: mongodb://localhost/
+// 2026-02-15T21:28:39.028+0200    dropping: shopDB.products
+// 2026-02-15T21:28:39.141+0200    3 document(s) imported successfully. 0 document(s) failed to import.
+
+=> mongodump --db myDB
+
+// output
+// 2026-02-15T21:30:07.278+0200    writing myDB.users to dump\myDB\users.bson
+// 2026-02-15T21:30:07.284+0200    writing myDB.students to dump\myDB\students.bson
+// 2026-02-15T21:30:07.285+0200    writing myDB.stores to dump\myDB\stores.bson
+// 2026-02-15T21:30:07.287+0200    writing myDB.todos to dump\myDB\todos.bson
+// 2026-02-15T21:30:07.319+0200    done dumping myDB.users (9 documents)
+// 2026-02-15T21:30:07.348+0200    done dumping myDB.students (4 documents)
+// 2026-02-15T21:30:07.364+0200    done dumping myDB.todos (2 documents)
+// 2026-02-15T21:30:07.366+0200    done dumping myDB.stores (2 documents)
+
+=> mongodump --db shopDB --out mybackup
+
+// output
+// 2026-02-15T21:33:24.520+0200    writing shopDB.users to mybackup\shopDB\users.bson
+// 2026-02-15T21:33:24.522+0200    writing shopDB.products to mybackup\shopDB\products.bson
+// 2026-02-15T21:33:24.525+0200    done dumping shopDB.users (3 documents)
+// 2026-02-15T21:33:24.530+0200    done dumping shopDB.products (3 documents)
+
+=> mongodump
+
+// output
+// 2026-02-15T21:33:24.520+0200    writing shopDB.users to mybackup\shopDB\users.bson
+// 2026-02-15T21:33:24.522+0200    writing shopDB.products to mybackup\shopDB\products.bson
+// ects .......
+
+=> mongorestore --db shopDB mybackup/shopDB --drop
+
+// output
+// 2026-02-15T21:37:52.725+0200    6 document(s) restored successfully. 0 document(s) failed to restore.
+
+=> mongorestore dump/ --drop
+
+// output
+// 2026-02-15T21:40:43.445+0200    236391 document(s) restored successfully. 0 document(s) failed to restore.
+
