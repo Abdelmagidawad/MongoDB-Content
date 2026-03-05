@@ -230,3 +230,95 @@
   { _id: '2019.10', totalSales: 301 }
 ]
 
+=> > db.orders.aggregate([{$group:{_id:"$branch",averageTotal:{$avg:"$total"},sumTotal:{$sum:"$total"},maxtotal:{$max:"$total"},minTotal:{$min:"$total"}}},{$sort:{minTotal:-1}},{$limit:2}])
+
+// output
+[
+  {
+    _id: 'Alex',
+    averageTotal: 175,
+    sumTotal: 700,
+    maxtotal: 300,
+    minTotal: 50
+  },
+  {
+    _id: 'Cairo',
+    averageTotal: 208.33333333333334,
+    sumTotal: 1250,
+    maxtotal: 400,
+    minTotal: 20
+  }
+]
+
+
+=> db.books.insertMany([
+  {title:"the banquet",author:"dante",copies:10},
+  {title:"harry",author:"omar",copies:2},
+  {title:"potter",author:"dante",copies:1},
+  {title:"48 laws",author:"omar",copies:10},
+  {title:"odyssey",author:"dante",copies:2},
+])
+
+=> db.books.find()
+
+// how to get auther books 
+// => Use JS Code 
+
+=> [
+  {title:"the banquet",author:"dante",copies:10},
+  {title:"harry",author:"omar",copies:2},
+  {title:"potter",author:"dante",copies:1},
+  {title:"48 laws",author:"omar",copies:10},
+  {title:"odyssey",author:"dante",copies:2},
+].reduce((agg,cur)=>{
+  if(!agg[cur.author]){
+    agg[cur.author]=[cur.title]
+    return agg;
+  }else{
+    agg[cur.author].push(cur.title)
+    return agg
+  }
+
+},{})
+
+// output
+[
+  {dante:['the banquet', 'potter', 'odyssey']}
+  {omar:['harry', '48 laws']}
+]
+
+// => Use Aggregation MongoDB
+//  => $push
+
+=> db.books.aggregate([{$group:{_id:"$author",books:{$push:"$title"}}}])
+
+// output
+[
+  { _id: 'dante', books: [ 'the banquet', 'potter', 'odyssey' ] },
+  { _id: 'omar', books: [ 'harry', '48 laws' ] }
+]
+
+//  => $$ROOT
+
+=>  db.books.aggregate([{$group:{_id:"$author",books:{$push:"$$ROOT"}}},{$limit:1}])
+
+// output
+[
+  {
+    _id: 'omar',
+    books: [
+      {
+        _id: ObjectId('69a8bcca7bd7a1e9221e2622'),
+        title: 'harry',
+        author: 'omar',
+        copies: 2
+      },
+      {
+        _id: ObjectId('69a8bcca7bd7a1e9221e2624'),
+        title: '48 laws',
+        author: 'omar',
+        copies: 10
+      }
+    ]
+  }
+]
