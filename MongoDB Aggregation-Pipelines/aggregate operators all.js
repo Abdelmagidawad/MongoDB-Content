@@ -75,3 +75,45 @@
   { _id: 'Sara', avgPrice: 525, maxPrice: 1000 },
   { _id: 'Ali', avgPrice: 550, maxPrice: 1000 }
 ]
+
+////
+
+=> db.students.insertMany([
+ { name: "Ali", grade: 80, subject: "Math" },
+ { name: "Sara", grade: 90, subject: "Math" },
+ { name: "Ali", grade: 70, subject: "English" },
+ { name: "Sara", grade: 85, subject: "English" }
+])
+
+=> db.students.find()
+
+=> db.students.aggregate([{$match:{subject:"Math"}},{$limit:1}])
+
+// output
+[                                               
+  {                                             
+    _id: ObjectId('69af500d65c3cc43e71e2621'),  
+    name: 'Ali',                                
+    grade: 80,                                  
+    subject: 'Math'                             
+  }                                             
+]                                               
+
+=> db.students.aggregate([{$group:{_id:"$name",avgGrade:{$avg:"$grade"}}}])
+
+// output
+[ { _id: 'Sara', avgGrade: 87.5 }, { _id: 'Ali', avgGrade: 75 } ]
+
+=> db.students.aggregate([{$group:{_id:"$name",avgGrade:{$avg:"$grade"}}},{$project:{_id:0,stuentsName:"$_id",avgGrade:1}}])
+
+// output
+[
+  { avgGrade: 87.5, stuentsName: 'Sara' },
+  { avgGrade: 75, stuentsName: 'Ali' }
+]
+
+=> db.students.aggregate([{$group:{_id:"$name",avgGrade:{$avg:"$grade"}}},{$project:{_id:0,stuentsName:"$_id",avgGrade:1}},{$sort:{avgGrade:-1}},{$limit:1}])
+
+// output
+[ { avgGrade: 87.5, stuentsName: 'Sara' } ]
+
